@@ -90,24 +90,21 @@ int main() {
             bool guessed = false;
 
             for (int attempt = 0; attempt < MAX_ATTEMPTS && !guessed; attempt++) {
-                cout << "Tentativo " << attempt + 1 << " - Hai " << TIME_LIMIT << " secondi per rispondere!\n";
+                cout << "Tentativo " << attempt + 1 << " - Hai 30 secondi per rispondere!\n";
 
                 time_t start = time(0);
                 char user_guess[50] = "";
+                bool time_expired = false;
 
                 while (true) {
                     time_t now = time(0);
-                    int seconds_passed = now - start;
-                    int time_left = TIME_LIMIT - seconds_passed;
 
-                    if (time_left <= 0) {
+                    if (now - start >= TIME_LIMIT) {
                         cout << "\n⏳ Tempo scaduto! Nessun punto assegnato.\n";
                         guessed = true;
+                        time_expired = true;
                         break;
                     }
-
-                    cout << "⏳ Tempo rimanente: " << time_left << " secondi...\r";
-                    cout.flush();
 
                     if (input_available()) {
                         cin.getline(user_guess, 50);
@@ -125,8 +122,10 @@ int main() {
                         break;
                     }
 
-                    this_thread::sleep_for(chrono::seconds(1));
+                    this_thread::sleep_for(chrono::milliseconds(100));
                 }
+
+                if (time_expired) break;
             }
         }
 
