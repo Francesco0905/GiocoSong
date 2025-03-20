@@ -2,15 +2,12 @@
 #include <cstring>
 #include <cstdlib>
 #include <ctime>
-#include <thread>  // Per il delay
-#include <chrono>  // Per il delay
 
 using namespace std;
 
 #define MAX_PLAYERS 10
 #define MAX_ROUNDS 10
 #define MAX_ATTEMPTS 3
-#define TIME_LIMIT 30 // Tempo massimo per turno in secondi
 
 // Frasi predefinite
 const char* phrases[] = {
@@ -23,7 +20,39 @@ const char* phrases[] = {
     "Ok ok, qui si parla di nuovo del ritardato",
     "Quando morirai solo la apple sarà in lutto",
     "Mauri mauri spendaccione",
-    "Maiale è certamente più appropriato"
+    "Maiale è certamente più appropriato",
+    "Poi metti il colpo in Canna e punta alla gola",
+    "Il tuo corpo dai corvi divorato",
+    "Posso dire con certezza che avevamo ragione",
+    "Dici che il rosso è un grande amante della figa",
+    "Il giorno del funerale non sarò dispiaciuto",
+    "Venderai il culo per non rimanere senza un tetto",
+    "Hanno sempre addosso tutti gli occhi",
+    "Al sabato sera esci con la tua puttana",
+    "Sei così grasso che morirai a quarant’anni infartato",
+    "Ormai è diventato un bersaglio mirato",
+    "Ci siamo rotto in culo, il giorno è arrivato",
+    "Quello che dice quanto sei micro dotato",
+    "I carabinieri ti troveranno già sezionato",
+    "Dopo il botto verrai coperto di sputo",
+    "Se ci avessi chiesto scusa ti saresti salvato",
+    "Per ammazzarti ho avuto mille motivi",
+    "E così siamo arrivati al giorno del giudizio",
+    "La sua testa finirà in questa busta",
+    "La spedizione parte, le armi sono affilate",
+    "Pensando a come faremo fuori quel ratto",
+    "Nemmeno dio lo potrà salvare",
+    "Ora è il momento di ammazzare",
+    "Apriamo la porta le luci sono spente",
+    "Sul suo volto compare un’espressione impaurita",
+    "Coglione non muoverti, ormai sei fottuto",
+    "Quella dove parlo della sua dipartita",
+    "Il ciccione è sul tavolo, ha smesso di lamentarsi",
+    "In questo modo non ci sarà rumore",
+    "Il battito è fermo, è proprio morto",
+    "Tanti sacchi neri per le parti di cadavere",
+    "Il peso è comunque difficile da smuovere",
+    "I genitori non denunceranno l’ accaduto"
 };
 const int num_phrases = sizeof(phrases) / sizeof(phrases[0]);
 
@@ -76,50 +105,27 @@ int main() {
             bool guessed = false;
 
             for (int attempt = 0; attempt < MAX_ATTEMPTS && !guessed; attempt++) {
-                cout << "Tentativo " << attempt + 1 << " - Hai " << TIME_LIMIT << " secondi per rispondere!\n";
-
-                time_t start = time(0), now;
+                cout << "Tentativo " << attempt + 1 << ": ";
                 char user_guess[50];
+                cin >> user_guess;
 
-                // Conto alla rovescia visibile
-                while (true) {
-                    now = time(0);
-                    int seconds_passed = now - start;
-                    int time_left = TIME_LIMIT - seconds_passed;
-
-                    cout << "⏳ Tempo rimanente: " << time_left << " secondi...\r";
-                    cout.flush();  // Per aggiornare la riga di testo
-
-                    if (time_left <= 0) {
-                        cout << "⏳ Tempo scaduto! Nessun punto assegnato.\n";
-                        guessed = true;
-                        break;
+                if (strcmp(user_guess, correct_word) == 0) {
+                    int points = (attempt == 0) ? 10 : (attempt == 1) ? 5 : 3;
+                    players[i].score += points;
+                    cout << "Corretto! Hai guadagnato " << points << " punti.\n";
+                    guessed = true;
+                }
+                else if (strcmp(user_guess, correct_word) != 0) {
+                    cout << "Sbagliato!\n";
+                    if ( attempt == 2 ) {
+                        cout <<"La parola era: " << correct_word << " ahahah gay" ;
                     }
-
-                    // Controllo se l'utente ha inserito una risposta
-                    if (cin.peek() != EOF) {
-                        cin >> user_guess;
-                        if (strcmp(user_guess, correct_word) == 0) {
-                            int points = (attempt == 0) ? 10 : (attempt == 1) ? 5 : 3;
-                            players[i].score += points;
-                            cout << "✅ Corretto! Hai guadagnato " << points << " punti.\n";
-                            guessed = true;
-                        } else {
-                            cout << "❌ Sbagliato!\n";
-                            if (attempt == 2) {
-                                cout << "La parola era: " << correct_word << " ahahah gay\n";
-                            }
-                        }
-                        break;
-                    }
-
-                    this_thread::sleep_for(chrono::seconds(1)); // Aspetta un secondo
                 }
             }
         }
 
         // Mostra la classifica dopo ogni round
-        cout << "\n🏆 Classifica dopo il round " << round + 1 << ":\n";
+        cout << "\nClassifica dopo il round " << round + 1 << ":\n";
         for (int i = 0; i < num_players; i++) {
             cout << players[i].name << ": " << players[i].score << " punti\n";
         }
@@ -134,12 +140,12 @@ int main() {
     }
 
     // Fine del gioco
-    cout << "\n🏁 Classifica finale:\n";
+    cout << "\nClassifica finale:\n";
     for (int i = 0; i < num_players; i++) {
         cout << players[i].name << ": " << players[i].score << " punti\n";
     }
 
-    cout << "\n🎉 Il vincitore è: " << winner.name << " con " << winner.score << " punti!\n";
+    cout << "\nIl vincitore è: " << winner.name << " con " << winner.score << " punti!\n";
 
     cout << "Grazie per aver giocato!";
     return 0;
