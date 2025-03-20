@@ -17,7 +17,7 @@ using namespace std;
 #define MAX_PLAYERS 10
 #define MAX_ROUNDS 10
 #define MAX_ATTEMPTS 3
-#define TIME_LIMIT 30 // Tempo massimo per turno in secondi
+#define TIME_LIMIT 15 // Tempo massimo per turno in secondi
 
 const char* phrases[] = {
     "maurizio benazzi, è dal giorno zero che vivi succhiando cazzi",
@@ -581,7 +581,7 @@ int main() {
             bool guessed = false;
 
             for (int attempt = 0; attempt < MAX_ATTEMPTS && !guessed; attempt++) {
-                cout << "Tentativo " << attempt + 1 << " - Hai 30 secondi per rispondere!\n";
+                cout << "Tentativo " << attempt + 1 << " - Hai 15 secondi per rispondere! 🕦\n";
 
                 time_t start = time(0);
                 char user_guess[50] = "";
