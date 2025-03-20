@@ -1,0 +1,3 @@
+/Users/francesco/Desktop/GiocoSong/cmake-build-debug/CMakeFiles/GiocoSong.dir
+/Users/francesco/Desktop/GiocoSong/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/francesco/Desktop/GiocoSong/cmake-build-debug/CMakeFiles/rebuild_cache.dir
